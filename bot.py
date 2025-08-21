@@ -76,7 +76,7 @@ async def pug(ctx, *args):
 
     # Make buttons
     class QueueButtons(discord.ui.View):
-        @discord.ui.button(label="join", style=discord.ButtonStyle.success)
+        @discord.ui.button(label="Join", style=discord.ButtonStyle.success)
         async def playerJoin(
             self, interaction: discord.Interaction, button: discord.ui.Button
         ):
@@ -92,7 +92,7 @@ async def pug(ctx, *args):
             )
             await interaction.response.edit_message(embed=pugMessage)
 
-        @discord.ui.button(label="leave", style=discord.ButtonStyle.danger)
+        @discord.ui.button(label="Leave", style=discord.ButtonStyle.danger)
         async def playerLeave(
             self, interaction: discord.Interaction, button: discord.ui.Button
         ):
