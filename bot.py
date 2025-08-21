@@ -1,5 +1,6 @@
 import discord
 from discord.app_commands import Range
+from discord.enums import ButtonStyle
 from discord.ext import commands
 import os
 from dotenv import load_dotenv
@@ -18,6 +19,12 @@ async def on_ready():
     print("------")
 
 
+# Test command
+@bot.command(description="Test the bot is working properly")
+async def test(ctx):
+    await ctx.send("Hello world!")
+
+
 def constructQueue(players, playerCount):
     queue = ""
     for i in range(0, playerCount):
@@ -26,12 +33,6 @@ def constructQueue(players, playerCount):
         else:
             queue = queue + f"{i + 1}: \n"
     return queue
-
-
-# Test command
-@bot.command(description="Test the bot is working properly")
-async def test(ctx):
-    await ctx.send("Hello world!")
 
 
 # PUG command
@@ -67,9 +68,47 @@ async def pug(ctx, *args):
             return
 
     players = []
-    queue = constructQueue(players, playerCount)
 
-    await ctx.send(queue)
+    # Make queue message
+    queue = constructQueue(players, playerCount)
+    pugMessage = discord.Embed(title=f"Vikings {arg} PUG", color=0x0060FF)
+    pugMessage.add_field(name="Queue", value=queue, inline=False)
+
+    # Make buttons
+    class QueueButtons(discord.ui.View):
+        @discord.ui.button(label="join", style=discord.ButtonStyle.success)
+        async def playerJoin(
+            self, interaction: discord.Interaction, button: discord.ui.Button
+        ):
+            user = interaction.user
+            if user in players:
+                await interaction.response.send_message(
+                    content="You are already in the queue", ephemeral=True
+                )
+                return
+            players.append(user)
+            pugMessage.set_field_at(
+                index=0, name="Queue", value=constructQueue(players, playerCount)
+            )
+            await interaction.response.edit_message(embed=pugMessage)
+
+        @discord.ui.button(label="leave", style=discord.ButtonStyle.danger)
+        async def playerLeave(
+            self, interaction: discord.Interaction, button: discord.ui.Button
+        ):
+            user = interaction.user
+            if user not in players:
+                await interaction.response.send_message(
+                    content="You are not in the queue", ephemeral=True
+                )
+                return
+            players.remove(user)
+            pugMessage.set_field_at(
+                index=0, name="Queue", value=constructQueue(players, playerCount)
+            )
+            await interaction.response.edit_message(embed=pugMessage)
+
+    await ctx.send(embed=pugMessage, view=QueueButtons())
 
 
 load_dotenv()
