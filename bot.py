@@ -1,4 +1,5 @@
 import discord
+from discord.app_commands import Range
 from discord.ext import commands
 import os
 from dotenv import load_dotenv
@@ -15,6 +16,16 @@ async def on_ready():
 
     print(f"Logged in as {bot.user} (ID: {bot.user.id})")
     print("------")
+
+
+def constructQueue(players, playerCount):
+    queue = ""
+    for i in range(0, playerCount):
+        if i < len(players):
+            queue = queue + f"{i + 1}: {players[i]} \n"
+        else:
+            queue = queue + f"{i + 1}: \n"
+    return queue
 
 
 # Test command
@@ -38,12 +49,16 @@ async def pug(ctx, *args):
 
     match arg:
         case "1v1":
+            playerCount = 2
             pass
         case "2v2":
+            playerCount = 4
             pass
         case "3v3":
+            playerCount = 6
             pass
         case "4v4":
+            playerCount = 8
             pass
         case _:
             await ctx.send(
@@ -51,14 +66,17 @@ async def pug(ctx, *args):
             )
             return
 
-    await ctx.send(f"PUG {arg}")
+    players = []
+    queue = constructQueue(players, playerCount)
+
+    await ctx.send(queue)
 
 
 load_dotenv()
 botToken = os.getenv("BOT_TOKEN")
 if type(botToken) is not str:
     print(
-        "ERROR: Couldn't get bot token from .env. Does the file exist and BOT_TOKEN is defined?"
+        "ERROR: Couldn't get bot token from .env. Does the file exist and is BOT_TOKEN defined?"
     )
     exit()
 bot.run(token=botToken)
