@@ -17,5 +17,7 @@ Installation (Linux):
   pip install -r python-dependencies.txt
   ````
   5. Create .env file and add variables:
+
   `BOT_TOKEN=<your-discord-bot-token>`
+
   You should now be able to run the bot with `python3 bot.py`. use `deactivate` command to leave environment
