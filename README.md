@@ -3,16 +3,16 @@ Installation (Linux):
   ````
   git clone https://github.com/ALX-05/Viking-PUG
   ````
-  3. Create python virtual environment
+  2. Create python virtual environment
   ````
   python -m venv Viking-PUG
   ````
-  5. cd to environment and activate environment
+  3. cd to environment and activate environment
   ````
   cd Viking-PUG
   source ./bin/activate
   ````
-  6. Install python dependencies
+  4. Install python dependencies
   ````
   pip install -r python-dependencies.txt
   ````
