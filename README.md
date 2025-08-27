@@ -20,4 +20,4 @@ Installation (Linux):
 
   `BOT_TOKEN=<your-discord-bot-token>`
 
-  You should now be able to run the bot with `python3 bot.py`. use `deactivate` command to leave environment
+  You should now be able to run the bot with `python3 bot.py`. Use `deactivate` command to leave environment
